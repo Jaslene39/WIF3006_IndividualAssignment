@@ -17,25 +17,25 @@ public class UserController {
     }
 
     // get all users
-    @GetMapping
-    public List<User> getUsers(){
+    @GetMapping(path = "/getAllUsers")
+    public List<User> getAllUsers(){
         return userService.getUsers();
     }
 
     // add new user
-    @PostMapping
+    @PostMapping(path = "/addNewUser")
     public void addNewUser(@RequestBody User user) {
         userService.addNewUser(user);
     }
 
     // delete user by userId
-    @DeleteMapping(path = "{userId}")
+    @DeleteMapping(path = "/deleteUser/{userId}")
     public void deleteUser(@PathVariable("userId") Long userId) {
         userService.deleteUser(userId);
     }
 
     // update user by userId
-    @PutMapping(path = "{userId}")
+    @PutMapping(path = "/updateUser/{userId}")
     public void updateUser(@PathVariable("userId") Long userId,
                            @RequestParam(required = false) String name,
                            @RequestParam(required = false) String email,
