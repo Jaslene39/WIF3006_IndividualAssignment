@@ -11,5 +11,5 @@ public interface FitnessPlanRepository extends JpaRepository<FitnessPlan, Long> 
     Optional<FitnessPlan> findById(Long id);
 
     // Custom query to find fitness plan by userId
-    List<FitnessPlan> findByUserId(Long userId);
+    List<FitnessPlan> findByUserId(Long userId); // one user can have a list of fitness plans
 }

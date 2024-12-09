@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @Service
 public class FitnessPlanService {
@@ -30,6 +29,7 @@ public class FitnessPlanService {
     }
 
     public void addNewFitnessPlan(FitnessPlan fitnessPlan) {
+        // Check if the user exists
         boolean userExists  = userRepository.existsById(fitnessPlan.getUser().getId());
         if(!userExists ) {
             throw new IllegalStateException(
@@ -40,10 +40,11 @@ public class FitnessPlanService {
     }
 
     public void deleteFitnessPlan(Long fitnessPlanId) {
+        // Check if the fitness plan of specific fitness plan Id exists
         boolean exists = fitnessPlanRepository.existsById(fitnessPlanId);
         if(!exists) {
             throw new IllegalStateException(
-                    "fitness plan with id " + fitnessPlanId + " does not exists"
+                    "Fitness plan with id " + fitnessPlanId + " does not exists"
             );
         }
         fitnessPlanRepository.deleteById(fitnessPlanId);

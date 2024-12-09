@@ -16,31 +16,31 @@ public class FitnessPlanController {
         this.fitnessPlanService = fitnessPlanService;
     }
 
-    // get
+    // get all fitness plans of users
     @GetMapping(path = "/getAllFitnessPlans")
     public List<FitnessPlan> getAllFitnessPlans() {
         return this.fitnessPlanService.getAllFitnessPlans();
     }
 
+    // get fitness plan by user Id
     @GetMapping(path = "/getFitnessPlansByUserId/{userId}")
     public List<FitnessPlan> getFitnessPlansByUserId(@PathVariable("userId") Long userId) {
         return this.fitnessPlanService.getFitnessPlansByUserId(userId);
     }
 
-    // add
+    // add new fitness plan
     @PostMapping(path = "/addNewFitnessPlan")
     public void addNewFitnessPlan(@RequestBody FitnessPlan fitnessPlan) {
         fitnessPlanService.addNewFitnessPlan(fitnessPlan);
     }
 
-    // delete
-
+    // delete fitness plan by fitness plan Id
     @DeleteMapping(path = "/deleteFitnessPlan/{fitnessPlanId}")
     public void deleteFitnessPlan(@PathVariable("fitnessPlanId") Long fitnessPlanId) {
         fitnessPlanService.deleteFitnessPlan(fitnessPlanId);
     }
 
-    // update
+    // update fitness plan by user Id && fitness plan Id
     @PutMapping(path = "/updateFitnessPlan/{userId}/{fitnessPlanId}")
     public void updateFitnessPlan(@PathVariable("userId") Long userId,
                                   @PathVariable("fitnessPlanId") Long fitnessPlanId,
