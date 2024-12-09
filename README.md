@@ -1,4 +1,4 @@
-# new readme file
+# WIF 3006 Individual Assignment - Fitness Plan Application
 
 ## User
 **Add new user**
