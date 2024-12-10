@@ -9,10 +9,10 @@ import java.util.List;
 @RequestMapping(path = "api/v1/fitnessPlan")
 public class FitnessPlanController {
 
-    private final FitnessPlanService fitnessPlanService;
+    private final FitnessPlanServiceImpl fitnessPlanService;
 
     @Autowired
-    public FitnessPlanController(FitnessPlanService fitnessPlanService) {
+    public FitnessPlanController(FitnessPlanServiceImpl fitnessPlanService) {
         this.fitnessPlanService = fitnessPlanService;
     }
 

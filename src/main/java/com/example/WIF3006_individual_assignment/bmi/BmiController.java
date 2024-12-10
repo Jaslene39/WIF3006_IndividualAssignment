@@ -11,10 +11,10 @@ import java.util.List;
 @RequestMapping(path = "api/v1/bmi")
 public class BmiController {
 
-    private final BmiService bmiService;
+    private final BmiServiceImpl bmiService;
 
     @Autowired
-    public BmiController(BmiService bmiService) {
+    public BmiController(BmiServiceImpl bmiService) {
         this.bmiService = bmiService;
     }
 
