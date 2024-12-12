@@ -18,6 +18,10 @@ public class UserServiceImpl implements UserService{
         return userRepository.findAll();
     }
 
+    public User getUserById(Long userId) {
+        return userRepository.findUserById(userId);
+    }
+
     public void addNewUser(User user) {
         Optional<User> userOptional =  userRepository.findUserByEmail(user.getEmail());
         if(userOptional.isPresent()) {
@@ -26,7 +30,7 @@ public class UserServiceImpl implements UserService{
         userRepository.save(user);
     };
 
-    public void deleteUser(Long userId) {
+    public void deleteProfile(Long userId) {
         boolean exists = userRepository.existsById(userId);
         if(!exists) {
             throw new IllegalStateException(
@@ -37,7 +41,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Transactional
-    public void updateUser(Long userId, String name, String email, Integer age) {
+    public void updateProfile(Long userId, String name, String email, Integer age) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalStateException(
                         "user with id " + userId + " does not exists" ));

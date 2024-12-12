@@ -25,7 +25,7 @@ public class FitnessPlanController {
     // get fitness plan by user Id
     @GetMapping(path = "/getFitnessPlansByUserId/{userId}")
     public List<FitnessPlan> getFitnessPlansByUserId(@PathVariable("userId") Long userId) {
-        return this.fitnessPlanService.getFitnessPlansByUserId(userId);
+        return fitnessPlanService.getFitnessPlansByUserId(userId);
     }
 
     // add new fitness plan

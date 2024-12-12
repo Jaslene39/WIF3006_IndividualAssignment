@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "api/v1/user")
@@ -22,6 +23,11 @@ public class UserController {
         return userService.getUsers();
     }
 
+    @GetMapping(path = "/getUserById/{userId}")
+    public User getUserById(@PathVariable("userId") Long userId) {
+        return userService.getUserById(userId);
+    }
+
     // add new user
     @PostMapping(path = "/addNewUser")
     public void addNewUser(@RequestBody User user) {
@@ -30,16 +36,16 @@ public class UserController {
 
     // delete user by userId
     @DeleteMapping(path = "/deleteUser/{userId}")
-    public void deleteUser(@PathVariable("userId") Long userId) {
-        userService.deleteUser(userId);
+    public void deleteProfile(@PathVariable("userId") Long userId) {
+        userService.deleteProfile(userId);
     }
 
     // update user by userId
     @PutMapping(path = "/updateUser/{userId}")
-    public void updateUser(@PathVariable("userId") Long userId,
+    public void updateProfile(@PathVariable("userId") Long userId,
                            @RequestParam(required = false) String name,
                            @RequestParam(required = false) String email,
                            @RequestParam(required = false) Integer age) {
-        userService.updateUser(userId, name, email, age);
+        userService.updateProfile(userId, name, email, age);
     }
 }
