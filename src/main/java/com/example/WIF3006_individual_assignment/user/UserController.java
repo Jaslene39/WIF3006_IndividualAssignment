@@ -31,7 +31,13 @@ public class UserController {
     // add new user
     @PostMapping(path = "/addNewUser")
     public void addNewUser(@RequestBody User user) {
-        userService.addNewUser(user);
+        try {
+            userService.addNewUser(user);
+        } catch (IllegalArgumentException | IllegalStateException e) {
+            // Log the error and provide feedback to the caller
+            System.out.println("Error: " + e.getMessage());
+            throw e;
+        }
     }
 
     // delete user by userId

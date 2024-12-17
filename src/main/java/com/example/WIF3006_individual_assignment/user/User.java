@@ -23,6 +23,7 @@ public class User {
     private String name;
     @Column(name = "email")
     private String email;
+
     @Column(name = "age")
     private Integer age;
 
