@@ -28,6 +28,11 @@ public class UserServiceImpl implements UserService{
     }
 
     public void addNewUser(User user) {
+        // Validate name
+        if (user.getName() == null || user.getName().trim().isEmpty()) {
+            throw new IllegalArgumentException("Name must not be empty");
+        }
+
         // Validate email format
         if (!isValidEmail(user.getEmail())) {
             throw new IllegalArgumentException("Invalid email format");
@@ -75,9 +80,13 @@ public class UserServiceImpl implements UserService{
                 .orElseThrow(() -> new IllegalStateException(
                         "user with id " + userId + " does not exists" ));
 
-        if(name != null && name.length() > 0 && !Objects.equals(user.getName(), name)) {
+        // Validate and update the name
+        if (name != null && !name.trim().isEmpty() && !Objects.equals(user.getName(), name)) {
             user.setName(name);
+        } else if (name != null && name.trim().isEmpty()) {
+            throw new IllegalArgumentException("Name cannot be empty.");
         }
+
         // Validate and update the email
         if (email != null && email.trim().length() > 0 && !Objects.equals(user.getEmail(), email)) {
             if (!isValidEmail(email)) {
