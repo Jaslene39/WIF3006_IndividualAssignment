@@ -6,6 +6,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -26,12 +27,47 @@ public class FitnessPlanServiceImpl implements FitnessPlanService{
 
     public void addNewFitnessPlan(FitnessPlan fitnessPlan) {
         // Check if the user exists
-        boolean userExists  = userRepository.existsById(fitnessPlan.getUser().getId());
-        if(!userExists ) {
+        boolean userExists = userRepository.existsById(fitnessPlan.getUser().getId());
+        if (!userExists) {
             throw new IllegalStateException(
-                    "User with id " + fitnessPlan.getUser().getId() + " does not exists"
+                    "User with id " + fitnessPlan.getUser().getId() + " does not exist"
             );
         }
+
+        // Validate that 'plantitle' is not null or empty
+        if (fitnessPlan.getPlanTitle() == null || fitnessPlan.getPlanTitle().trim().isEmpty()) {
+            throw new IllegalArgumentException("Plantitle cannot be empty");
+        }
+
+        // Validate that 'plandesc' is not null or empty
+        if (fitnessPlan.getPlanDesc() == null || fitnessPlan.getPlanDesc().trim().isEmpty()) {
+            throw new IllegalArgumentException("Plan description cannot be empty");
+        }
+
+        // Validate that 'goal' is not null or empty
+        if (fitnessPlan.getGoal() == null || fitnessPlan.getGoal().trim().isEmpty()) {
+            throw new IllegalArgumentException("Goal cannot be empty");
+        }
+
+        // Validate that 'duration' is not null, empty, and follows the correct format
+        if (fitnessPlan.getDuration() == null || fitnessPlan.getDuration().trim().isEmpty()) {
+            throw new IllegalArgumentException("Duration cannot be empty");
+        }
+
+        // Validate that 'difficultylevel' is not null or empty
+        if (fitnessPlan.getDifficultyLevel() == null || fitnessPlan.getDifficultyLevel().trim().isEmpty()) {
+            throw new IllegalArgumentException("Difficulty level cannot be empty");
+        }
+
+        // Validate that 'difficultylevel' is a valid level (e.g., easy, medium, hard)
+        String[] validDifficultyLevels = {"Beginner", "Intermediate", "Advanced"};
+        boolean validLevel = Arrays.stream(validDifficultyLevels)
+                .anyMatch(level -> level.equalsIgnoreCase(fitnessPlan.getDifficultyLevel().trim()));
+        if (!validLevel) {
+            throw new IllegalArgumentException("Difficulty level must be one of the following: Beginner, Intermediate, or Advanced");
+        }
+
+        // Save the fitness plan if all validations pass
         fitnessPlanRepository.save(fitnessPlan);
     }
 
@@ -63,21 +99,44 @@ public class FitnessPlanServiceImpl implements FitnessPlanService{
             throw new IllegalStateException("Fitness plan does not belong to the user with id " + userId);
         }
 
-        // Update fields if non-null and valid
+        // Validate and update the planTitle
         if (planTitle != null && !planTitle.trim().isEmpty() && !Objects.equals(fitnessPlan.getPlanTitle(), planTitle)) {
             fitnessPlan.setPlanTitle(planTitle);
+        } else if (planTitle != null && planTitle.trim().isEmpty()) {
+            throw new IllegalArgumentException("Plan title cannot be empty");
         }
+
+        // Validate and update the planDesc
         if (planDesc != null && !planDesc.trim().isEmpty() && !Objects.equals(fitnessPlan.getPlanDesc(), planDesc)) {
             fitnessPlan.setPlanDesc(planDesc);
+        } else if (planDesc != null && planDesc.trim().isEmpty()) {
+            throw new IllegalArgumentException("Plan description cannot be empty");
         }
+
+        // Validate and update the goal
         if (goal != null && !goal.trim().isEmpty() && !Objects.equals(fitnessPlan.getGoal(), goal)) {
             fitnessPlan.setGoal(goal);
+        } else if (goal != null && goal.trim().isEmpty()) {
+            throw new IllegalArgumentException("Goal cannot be empty");
         }
-        if (duration != null && !duration.trim().isEmpty() && !Objects.equals(fitnessPlan.getDuration(), duration)) {
-            fitnessPlan.setDuration(duration);
+
+        // Validate and update the duration
+        if (duration != null && duration.trim().isEmpty()) {
+            throw new IllegalArgumentException("Duration cannot be empty");
         }
+
+        // Validate and update the difficultyLevel
         if (difficultyLevel != null && !difficultyLevel.trim().isEmpty() && !Objects.equals(fitnessPlan.getDifficultyLevel(), difficultyLevel)) {
+            // Validate the difficulty level
+            String[] validDifficultyLevels = {"Beginner", "Intermediate", "Advanced"};
+            boolean validLevel = Arrays.stream(validDifficultyLevels)
+                    .anyMatch(level -> level.equalsIgnoreCase(difficultyLevel.trim()));
+            if (!validLevel) {
+                throw new IllegalArgumentException("Difficulty level must be one of the following: Beginner, Intermediate, or Advanced");
+            }
             fitnessPlan.setDifficultyLevel(difficultyLevel);
+        } else if (difficultyLevel != null && difficultyLevel.trim().isEmpty()) {
+            throw new IllegalArgumentException("Difficulty level cannot be empty");
         }
 
         // Save the updated fitness plan

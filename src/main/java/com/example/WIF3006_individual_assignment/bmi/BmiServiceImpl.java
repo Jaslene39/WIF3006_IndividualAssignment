@@ -22,6 +22,14 @@ public class BmiServiceImpl implements BmiService{
     }
 
     public void addBmiData(Bmi bmi) {
+        // Validate height and weight
+        if (bmi.getHeight() == null || bmi.getHeight() <= 0) {
+            throw new IllegalArgumentException("Height must be a valid positive number.");
+        }
+        if (bmi.getWeight() == null || bmi.getWeight() <= 0) {
+            throw new IllegalArgumentException("Weight must be a valid positive number.");
+        }
+
         // Check if the user already has BMI data
         Optional<Bmi> existingBmi = bmiRepository.findByUserId(bmi.getUser().getId());
 
@@ -48,11 +56,24 @@ public class BmiServiceImpl implements BmiService{
         Bmi bmi = bmiRepository.findByUserId(userId)
                 .orElseThrow(() -> new IllegalStateException(
                         "BMI data of the user with user id " + userId + " does not exists"));
-        if(height != null && height > 0 && !Objects.equals(bmi.getHeight(), height)) {
-            bmi.setHeight(height);
+        // Validate and update height
+        if (height != null) {
+            if (height <= 0) {
+                throw new IllegalArgumentException("Height must be a valid positive number.");
+            }
+            if (!Objects.equals(bmi.getHeight(), height)) {
+                bmi.setHeight(height);
+            }
         }
-        if(weight != null && weight > 0 && !Objects.equals(bmi.getWeight(), weight)) {
-            bmi.setWeight(weight);
+
+        // Validate and update weight
+        if (weight != null) {
+            if (weight <= 0) {
+                throw new IllegalArgumentException("Weight must be a valid positive number.");
+            }
+            if (!Objects.equals(bmi.getWeight(), weight)) {
+                bmi.setWeight(weight);
+            }
         }
         bmi.calculateBmi();
         bmiRepository.save(bmi);
